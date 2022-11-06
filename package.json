@@ -1,0 +1,32 @@
+{
+  "name": "discordbot",
+  "version": "1.0.0",
+  "description": "Discord Bot code",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/limeman40/DiscordBot.git"
+  },
+  "keywords": [
+    "Discord",
+    "Bot"
+  ],
+  "author": "limeman",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/limeman40/DiscordBot/issues"
+  },
+  "homepage": "https://github.com/limeman40/DiscordBot#readme",
+  "dependencies": {
+    "axios": "^1.1.3",
+    "discord": "^0.8.2",
+    "discord.js": "^14.6.0",
+    "dotenv": "^16.0.3"
+  },
+  "devDependencies": {
+    "eslint": "^8.27.0"
+  }
+}
