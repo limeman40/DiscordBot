@@ -2,27 +2,29 @@
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
 const { Client, Collection, Events, GatewayIntentBits, Intents, SlashCommandBuilder } = require('discord.js');
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const client = new Client({ intents: ['Guilds', 'GuildMessages', 'GuildMembers', 'GuildInvites'] });
 
 const { token, clientID, guildId } = require('./config.json');
 
 const fs = require('fs');
 const path = require('path');
 
+// Create a client.commands Collection
 client.commands = new Collection();
+// Create a const that holds the path you want it to look at
 const commandsPath = path.join(__dirname, 'commands');
+// Create a const that filters based on files ending in js
 const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
 
+// Loop through and find all files that end in js for the specfied folder
 for (const file of commandFiles) {
 	const filePath = path.join(commandsPath, file);
 	const command = require(filePath);
 	client.commands.set(command.data.name, command);
+
 }
 
-client.on('ready', () => {
-	console.log(`Logged in as ${client.user.tag}!`);
-});
-
+// Listen for events looking for commands
 client.on(Events.InteractionCreate, async interaction => {
 	if (!interaction.isChatInputCommand()) return;
 
@@ -36,6 +38,23 @@ client.on(Events.InteractionCreate, async interaction => {
 		console.error(error);
 		await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
 	}
+});
+
+const triggerWords = ['banana', 'fire', 'white'];
+
+client.on('messageCreate', (message) => {
+  if (message.author.bot) return false;
+
+  triggerWords.forEach((word) => {
+    if (message.content.includes(word)) {
+      message.reply(message.content);
+	  console.log(message.content);
+    }
+  });
+});
+
+client.on('ready', () => {
+	console.log(`Logged in as ${client.user.tag}!`);
 });
 
 client.login(token);
