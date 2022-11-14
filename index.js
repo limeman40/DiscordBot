@@ -1,8 +1,11 @@
 // Require the necessary discord.js classes
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
-const { Client, Collection, Events, GatewayIntentBits, Intents, SlashCommandBuilder } = require('discord.js');
-const client = new Client({ intents: ['Guilds', 'GuildMessages', 'GuildMembers', 'GuildInvites'] });
+const { Client, Collection, Events, GatewayIntentBits, Intents, SlashCommandBuilder, Guild } = require('discord.js');
+const client = new Client({ intents: [GatewayIntentBits.Guilds,
+	GatewayIntentBits.GuildMessages,
+	GatewayIntentBits.MessageContent,
+	GatewayIntentBits.GuildMembers] });
 
 const { token, clientID, guildId } = require('./config.json');
 
@@ -40,6 +43,12 @@ client.on(Events.InteractionCreate, async interaction => {
 	}
 });
 
+client.on('ready', () => {
+	console.log(`Logged in as ${client.user.tag}!`);
+});
+
+client.login(token);
+
 const triggerWords = ['banana', 'fire', 'white'];
 
 client.on('messageCreate', (message) => {
@@ -48,13 +57,6 @@ client.on('messageCreate', (message) => {
   triggerWords.forEach((word) => {
     if (message.content.includes(word)) {
       message.reply(message.content);
-	  console.log(message.content);
     }
   });
 });
-
-client.on('ready', () => {
-	console.log(`Logged in as ${client.user.tag}!`);
-});
-
-client.login(token);
